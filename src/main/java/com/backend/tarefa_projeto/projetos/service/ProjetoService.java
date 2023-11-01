@@ -40,11 +40,7 @@ public class ProjetoService {
         return projetosRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Projeto not found"));
     }
-
-    public List<ProjetosDomain> findByNomeDoProjeto(String name) {
-        return projetosRepository.findByNomeDoProjeto(name);
-    }
-
+    
     public ProjetosDomain save(ProjetosPostRequestBody projetosPostRequestBody) {
         ProjetosDomain projeto = ProjetosDomain.builder()
                 .nomeDoProjeto(projetosPostRequestBody.getNomeDoProjeto())

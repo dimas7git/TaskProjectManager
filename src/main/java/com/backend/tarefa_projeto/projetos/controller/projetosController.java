@@ -44,11 +44,6 @@ public ResponseEntity<List<ProjetosDomain>> list() {
         return ResponseEntity.ok(projetoService.findByIdOrThrowBadRequestException(id));
     }
 
-    @GetMapping(path = "/find")
-    public ResponseEntity<List<ProjetosDomain>> findByNomeDoProjeto(@RequestParam String name) {
-        return ResponseEntity.ok(projetoService.findByNomeDoProjeto(name));
-    }
-
     @PostMapping
     public ResponseEntity<ProjetosDomain> save(@RequestBody ProjetosPostRequestBody projetosPostRequestBody) {
         return new ResponseEntity<>(projetoService.save(projetosPostRequestBody), HttpStatus.CREATED);
