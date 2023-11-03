@@ -1,9 +1,11 @@
 package com.backend.tarefa_projeto.projetos.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
-import com.backend.tarefa_projeto.projetos.domain.ProjetosDomain;
 
-public interface ProjetosRepository extends JpaRepository<ProjetosDomain, Long> {
-    List<ProjetosDomain> findByNomeDoProjeto(String nomeDoProjeto);
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosDTO;
+
+import java.util.List;
+
+public interface ProjetosRepository extends JpaRepository<ProjetosDTO, Long> {
+    List<ProjetosDTO> findByNomeDoProjeto(String nomeDoProjeto);
 }

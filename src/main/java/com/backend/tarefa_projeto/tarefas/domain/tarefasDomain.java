@@ -3,7 +3,7 @@ package com.backend.tarefa_projeto.tarefas.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.backend.tarefa_projeto.projetos.domain.ProjetosDomain;
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,5 +39,5 @@ public class tarefasDomain {
 
     @ManyToOne
     @JoinColumn(name = "Projeto_id")
-    private ProjetosDomain projeto;
+    private ProjetosDTO projeto;
 }

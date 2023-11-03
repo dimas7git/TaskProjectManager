@@ -1,4 +1,4 @@
-package com.backend.tarefa_projeto.projetos.domain;
+package com.backend.tarefa_projeto.projetos.DTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,14 +20,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @Table(name="projetos")
-public class ProjetosDomain {
+public class ProjetosDTO {
 
     
-    @Id // Anotação para indicar que este campo é a chave primária
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "Removido") // Mapeie o campo "Removido" para a coluna com o mesmo nome no banco de dados
+    @Column(name = "Removido") 
     private boolean removido;
 
     @Column(name = "nomeDoProjeto")

@@ -1,4 +1,4 @@
-package com.backend.tarefa_projeto.projetos.service;
+package com.backend.tarefa_projeto.projetos.DAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,28 +6,29 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.backend.tarefa_projeto.projetos.domain.ProjetosDomain;
+
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosDTO;
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosPostRequestBody;
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosPutRequestBody;
 import com.backend.tarefa_projeto.projetos.exception.BadRequestException;
 import com.backend.tarefa_projeto.projetos.repository.ProjetosRepository;
-import com.backend.tarefa_projeto.projetos.requests.ProjetosPostRequestBody;
-import com.backend.tarefa_projeto.projetos.requests.ProjetosPutRequestBody;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ProjetoService {
+public class ProjetoDAO {
     private final ProjetosRepository projetosRepository;
 
     @Autowired
-    public ProjetoService(ProjetosRepository projetosRepository) {
+    public ProjetoDAO(ProjetosRepository projetosRepository) {
         this.projetosRepository = projetosRepository;
     }
 
-    public List<ProjetosDomain> listAllActive() {
-        List<ProjetosDomain> allProjetos = projetosRepository.findAll();
-        List<ProjetosDomain> activeProjetos = new ArrayList<>();
+    public List<ProjetosDTO> listAllActive() {
+        List<ProjetosDTO> allProjetos = projetosRepository.findAll();
+        List<ProjetosDTO> activeProjetos = new ArrayList<>();
     
-        for (ProjetosDomain projeto : allProjetos) {
+        for (ProjetosDTO projeto : allProjetos) {
             if (!projeto.isRemovido()) {
                 activeProjetos.add(projeto);
             }
@@ -36,13 +37,13 @@ public class ProjetoService {
         return activeProjetos;
     }
 
-    public ProjetosDomain findByIdOrThrowBadRequestException(Long id) {
+    public ProjetosDTO findByIdOrThrowBadRequestException(Long id) {
         return projetosRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Projeto not found"));
     }
     
-    public ProjetosDomain save(ProjetosPostRequestBody projetosPostRequestBody) {
-        ProjetosDomain projeto = ProjetosDomain.builder()
+    public ProjetosDTO save(ProjetosPostRequestBody projetosPostRequestBody) {
+        ProjetosDTO projeto = ProjetosDTO.builder()
                 .nomeDoProjeto(projetosPostRequestBody.getNomeDoProjeto())
                 .dataDeInicio(projetosPostRequestBody.getDataDeInicio())
                 .custoDoProjeto(projetosPostRequestBody.getCustoDoProjeto())    
@@ -52,9 +53,9 @@ public class ProjetoService {
 
     @Transactional
     public boolean softDeleteProjeto(Long id) {
-        Optional<ProjetosDomain> projetoOptional = projetosRepository.findById(id);
+        Optional<ProjetosDTO> projetoOptional = projetosRepository.findById(id);
         if (projetoOptional.isPresent()) {
-            ProjetosDomain projeto = projetoOptional.get();
+            ProjetosDTO projeto = projetoOptional.get();
             projeto.setRemovido(true);
             projetosRepository.save(projeto);
             return true;
@@ -63,7 +64,7 @@ public class ProjetoService {
     }
 
     public void replace(ProjetosPutRequestBody projetosPutRequestBody) {
-        ProjetosDomain projeto = findByIdOrThrowBadRequestException(projetosPutRequestBody.getId());
+        ProjetosDTO projeto = findByIdOrThrowBadRequestException(projetosPutRequestBody.getId());
         projeto.setNomeDoProjeto(projetosPutRequestBody.getNomeDoProjeto());
         projeto.setDataDeInicio(projetosPutRequestBody.getDataDeInicio());
         projeto.setCustoDoProjeto(projetosPutRequestBody.getCustoDoProjeto());

@@ -1,4 +1,4 @@
-package com.backend.tarefa_projeto.projetos.exception;
+package com.backend.tarefa_projeto.projetos.DTO;
 
 import java.time.LocalDateTime;
 

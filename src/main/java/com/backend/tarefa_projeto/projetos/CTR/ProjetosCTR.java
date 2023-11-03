@@ -1,4 +1,4 @@
-package com.backend.tarefa_projeto.projetos.controller;
+package com.backend.tarefa_projeto.projetos.CTR;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,41 +11,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.tarefa_projeto.projetos.domain.ProjetosDomain;
-import com.backend.tarefa_projeto.projetos.requests.ProjetosPostRequestBody;
-import com.backend.tarefa_projeto.projetos.requests.ProjetosPutRequestBody;
-import com.backend.tarefa_projeto.projetos.service.ProjetoService;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import com.backend.tarefa_projeto.projetos.DAO.ProjetoDAO;
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosDTO;
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosPostRequestBody;
+import com.backend.tarefa_projeto.projetos.DTO.ProjetosPutRequestBody;
 
 @RestController
 @RequestMapping("/projetos")
-public class projetosController {
+public class ProjetosCTR {
     
-    private final ProjetoService projetoService;
+    private final ProjetoDAO projetoService;
 
     @Autowired
-    public projetosController(ProjetoService projetoService) {
+    public ProjetosCTR(ProjetoDAO projetoService) {
         this.projetoService = projetoService;
     }
 
     @GetMapping
-public ResponseEntity<List<ProjetosDomain>> list() {
-    List<ProjetosDomain> activeProjetos = projetoService.listAllActive();
-    return ResponseEntity.ok(activeProjetos);
+    public ResponseEntity<List<ProjetosDTO>> list() {
+    List<ProjetosDTO> activeProjetos = projetoService.listAllActive();
+        return ResponseEntity.ok(activeProjetos);
 }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ProjetosDomain> findById(@PathVariable Long id) {
+    public ResponseEntity<ProjetosDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(projetoService.findByIdOrThrowBadRequestException(id));
     }
 
     @PostMapping
-    public ResponseEntity<ProjetosDomain> save(@RequestBody ProjetosPostRequestBody projetosPostRequestBody) {
+    public ResponseEntity<ProjetosDTO> save(@RequestBody ProjetosPostRequestBody projetosPostRequestBody) {
         return new ResponseEntity<>(projetoService.save(projetosPostRequestBody), HttpStatus.CREATED);
     }
 
