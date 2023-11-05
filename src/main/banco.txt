@@ -1,0 +1,41 @@
+CREATE TABLE Projetos (
+    ID serial PRIMARY KEY,
+    Removido boolean NOT NULL DEFAULT false,
+    Nome_do_Projeto text NOT NULL,
+    Data_de_Inicio date,
+    Custo_do_Projeto decimal
+);
+
+CREATE TABLE Tarefas (
+    ID serial PRIMARY KEY,
+    Removido boolean NOT NULL DEFAULT false,
+    Descricao_da_Tarefa text NOT NULL,
+    Data_de_Conclusao date,
+    Projeto_id integer REFERENCES Projetos(ID)
+);
+
+INSERT INTO Projetos (Removido, Nome_do_Projeto, Data_de_Inicio, Custo_do_Projeto)
+VALUES (false, 'Projeto A', '2023-11-01', 1000.00);
+
+-- Inserir outro projeto
+INSERT INTO Projetos (Removido, Nome_do_Projeto, Data_de_Inicio, Custo_do_Projeto)
+VALUES (false, 'Projeto B', '2023-11-02', 1500.00);
+
+-- Inserir mais um projeto
+INSERT INTO Projetos (Removido, Nome_do_Projeto, Data_de_Inicio, Custo_do_Projeto)
+VALUES (false, 'Projeto C', '2023-11-03', 800.00);
+
+create table IF NOT EXISTS usuarios (
+    usuarioid bigserial constraint pk_usuarios PRIMARY KEY,
+    username varchar(10) UNIQUE,
+    password text,
+    deleted boolean DEFAULT false
+);
+
+
+CREATE EXTENSION if NOT EXISTS pgcrypto;
+
+insert into usuarios values 
+    (default, 'admin', crypt('admin', gen_salt('bf'))),
+    (default, 'qwe', crypt('qwe', gen_salt('bf')))
+ON CONFLICT DO NOTHING;

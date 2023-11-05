@@ -1,4 +1,4 @@
-package com.backend.tarefa_projeto.projetos.DTO;
+package com.backend.tarefa_projeto.projetos.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.Data;

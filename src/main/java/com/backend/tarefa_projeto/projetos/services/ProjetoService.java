@@ -1,4 +1,4 @@
-package com.backend.tarefa_projeto.projetos.DAO;
+package com.backend.tarefa_projeto.projetos.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,20 +7,19 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.backend.tarefa_projeto.projetos.DTO.ProjetosDTO;
-import com.backend.tarefa_projeto.projetos.DTO.ProjetosPostRequestBody;
-import com.backend.tarefa_projeto.projetos.DTO.ProjetosPutRequestBody;
+import com.backend.tarefa_projeto.projetos.entity.ProjetosDTO;
+import com.backend.tarefa_projeto.projetos.entity.ProjetosPostRequestBody;
+import com.backend.tarefa_projeto.projetos.entity.ProjetosPutRequestBody;
 import com.backend.tarefa_projeto.projetos.exception.BadRequestException;
 import com.backend.tarefa_projeto.projetos.repository.ProjetosRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ProjetoDAO {
+public class ProjetoService {
     private final ProjetosRepository projetosRepository;
 
-    @Autowired
-    public ProjetoDAO(ProjetosRepository projetosRepository) {
+    public ProjetoService(ProjetosRepository projetosRepository) {
         this.projetosRepository = projetosRepository;
     }
 

@@ -3,7 +3,7 @@ package com.backend.tarefa_projeto.tarefas.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.backend.tarefa_projeto.projetos.DTO.ProjetosDTO;
+import com.backend.tarefa_projeto.projetos.entity.ProjetosDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

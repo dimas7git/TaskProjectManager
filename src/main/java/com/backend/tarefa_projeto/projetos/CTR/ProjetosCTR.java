@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.tarefa_projeto.projetos.DAO.ProjetoDAO;
-import com.backend.tarefa_projeto.projetos.DTO.ProjetosDTO;
-import com.backend.tarefa_projeto.projetos.DTO.ProjetosPostRequestBody;
-import com.backend.tarefa_projeto.projetos.DTO.ProjetosPutRequestBody;
+import com.backend.tarefa_projeto.projetos.entity.ProjetosDTO;
+import com.backend.tarefa_projeto.projetos.entity.ProjetosPostRequestBody;
+import com.backend.tarefa_projeto.projetos.entity.ProjetosPutRequestBody;
+import com.backend.tarefa_projeto.projetos.services.ProjetoService;
 
 @RestController
 @RequestMapping("/projetos")
 public class ProjetosCTR {
     
-    private final ProjetoDAO projetoService;
+    private final ProjetoService projetoService;
 
     @Autowired
-    public ProjetosCTR(ProjetoDAO projetoService) {
+    public ProjetosCTR(ProjetoService projetoService) {
         this.projetoService = projetoService;
     }
 
