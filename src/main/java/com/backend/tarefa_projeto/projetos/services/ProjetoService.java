@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.tarefa_projeto.projetos.entity.ProjetosDTO;
@@ -22,7 +21,7 @@ public class ProjetoService {
     public ProjetoService(ProjetosRepository projetosRepository) {
         this.projetosRepository = projetosRepository;
     }
-
+    
     public List<ProjetosDTO> listAllActive() {
         List<ProjetosDTO> allProjetos = projetosRepository.findAll();
         List<ProjetosDTO> activeProjetos = new ArrayList<>();
