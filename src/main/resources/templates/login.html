@@ -53,27 +53,29 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-            // Construa a URL do seu endpoint de login
-            const loginUrl = 'http://localhost:8080/auth/login';
+    const loginUrl = 'http://localhost:8080/auth/login';
 
-            // Construa os dados para enviar no corpo da requisição
-            const data = {
-                usuario: username,
-                senha: password
-            };
+    const data = {
+        usuario: username,
+        senha: password
+    };
 
-            try {
-                const response = await axios.post(loginUrl, data);
-                console.log(response.data);
+    try {
+        const response = await axios.post(loginUrl, data, { withCredentials: true });
+        const token = response.data.token;
 
-                // Armazene o token ou faça o que for necessário com a resposta
-            } catch (error) {
-                console.error('Error during login:', error);
-            }
-        }
+        localStorage.setItem('token', token);
+
+        console.log('Login bem-sucedido. Token:', token);
+        // Redirecione ou faça o que for necessário com a resposta
+    } catch (error) {
+        console.error('Erro durante o login:', error);
+    }
+}
+
     </script>
 </body>
 

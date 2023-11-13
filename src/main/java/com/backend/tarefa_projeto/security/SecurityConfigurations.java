@@ -30,19 +30,33 @@ public class SecurityConfigurations {
     SecurityFilter securityFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .anyRequest().authenticated()
+public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers(HttpMethod.OPTIONS, "/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .cors(cors -> {
+                CorsConfigurationSource source = request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500")); // Adicione os origens permitidos aqui
+                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+                    config.setAllowCredentials(true);
+                    config.setMaxAge(3600L);
+                    return config;
+                };
+                cors.configurationSource(source);
+            })
+            .headers().frameOptions().disable(); // Desabilita a proteção contra o ataque Clickjacking
 
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+    return httpSecurity.build();
+}
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
@@ -51,8 +65,8 @@ public class SecurityConfigurations {
         config.setAllowedMethods(List.of("*"));
         config.setAllowCredentials(true);
         config.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-
         final UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
+
         configSource.registerCorsConfiguration("/**", config);
 
         return configSource;
