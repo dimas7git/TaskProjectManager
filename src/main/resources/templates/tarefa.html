@@ -145,6 +145,45 @@
         });
     </script>
 
+    <!--
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const taskForm = document.getElementById('task-form');
+        const taskList = document.getElementById('task-list');
+
+        taskForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const descricaoTarefa = document.getElementById('descricaoTarefa').value;
+            const statusTarefa = document.getElementById('statusTarefa').value;
+
+            if (descricaoTarefa) {
+                try {
+                    const token = 'token'; 
+
+                    const response = await axios.post('http://localhost:8080/tarefas', {
+                        descricaoTarefa,
+                        statusTarefa
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    console.log('Resposta do servidor:', response.data);
+
+                    taskForm.reset();
+                } catch (error) {
+                    console.error('Erro ao enviar requisição:', error);
+                }
+            }
+        });
+    });
+</script>
+    -->
+
 
 
 </body>
