@@ -29,9 +29,12 @@ public class ProjetosDTO {
 
     private boolean removido;
 
+    @Column(name = "nome_do_projeto")
     private String nomeDoProjeto;
     
+    @Column(name = "data_de_inicio")
     private LocalDate dataDeInicio;
     
+    @Column(name = "custo_do_projeto")
     private BigDecimal custoDoProjeto;
 }
