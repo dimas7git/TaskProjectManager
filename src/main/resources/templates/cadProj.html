@@ -88,25 +88,12 @@
     
 
     <script>
-<<<<<<< HEAD
         async function salvarProjeto() {
             const nomeDoProjeto = document.getElementById('nomeDoProjeto').value;
             const dataDeInicio = document.getElementById('dataDeInicio').value;
             const custoDoProjeto = document.getElementById('custoDoProjeto').value;
     
             const projetoData = {
-=======
-        function salvarProjeto() {
-
-            var token = localStorage.getItem('token');
-
-            // Get form data
-            var nomeDoProjeto = document.getElementById('nomeProjeto').value;
-            var dataDeInicio = document.getElementById('dataInicio').value;
-            var custoDoProjeto = document.getElementById('custoProjeto').value;
-
-            var data = {
->>>>>>> origin/front
                 nomeDoProjeto: nomeDoProjeto,
                 dataDeInicio: dataDeInicio,
                 custoDoProjeto: custoDoProjeto
@@ -115,7 +102,6 @@
             const token = localStorage.getItem('token');
             const salvarProjetoUrl = 'http://localhost:8080/projetos';
 
-<<<<<<< HEAD
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", "Bearer " + token);
@@ -145,25 +131,6 @@
         }
     </script>
     
-=======
-            
-            var jsonData = JSON.stringify(data);
-
-            axios.post('http://localhost:8080/projetos/', jsonData, {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            })
-            .then(response => {
-                console.log('Success:', response.data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    </script>
-
->>>>>>> origin/front
 </body>
 
 </html>
