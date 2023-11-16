@@ -41,18 +41,18 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 offset-lg-3 form-container">
-                            <form action="?" method="post">
+                            <form>
                                 <div class="form-group mb-4">
-                                    <label for="nomeProjeto">Nome do Projeto</label>
-                                    <input type="text" class="form-control" id="nomeProjeto" name="nomeProjeto" required>
+                                    <label for="nomeDoProjeto">Nome do Projeto</label>
+                                    <input type="text" class="form-control" id="nomeDoProjeto" name="nomeDoProjeto" required>
                                 </div>
                                 <div class="form-group mb-4">
-                                    <label for="dataInicio">Data de Início</label>
-                                    <input type="date" class="form-control" id="dataInicio" name="dataInicio" placeholder="dd-mm-yyyy" value="">
+                                    <label for="dataDeInicio">Data de Início</label>
+                                    <input type="date" class="form-control" id="dataDeInicio" name="dataDeInicio" placeholder="dd-mm-yyyy" value="">
                                 </div>
                                 <div class="form-group mb-4">
-                                    <label for="custoProjeto">Custo do Projeto</label>
-                                    <input type="number" class="form-control" id="custoProjeto" name="custoProjeto" step="0.01">
+                                    <label for="custoDoProjeto">Custo do Projeto</label>
+                                    <input type="number" class="form-control" id="custoDoProjeto" name="custoDoProjeto" step="0.01">
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary" onclick="salvarProjeto()">Salvar Projeto</button>
@@ -71,32 +71,49 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        function salvarProjeto() {
-            var nomeDoProjeto = document.getElementById('nomeProjeto').value;
-            var dataDeInicio = document.getElementById('dataInicio').value;
-            var custoDoProjeto = document.getElementById('custoProjeto').value;
-
-            var projetoData = {
+        async function salvarProjeto() {
+            const nomeDoProjeto = document.getElementById('nomeDoProjeto').value;
+            const dataDeInicio = document.getElementById('dataDeInicio').value;
+            const custoDoProjeto = document.getElementById('custoDoProjeto').value;
+    
+            const projetoData = {
                 nomeDoProjeto: nomeDoProjeto,
                 dataDeInicio: dataDeInicio,
                 custoDoProjeto: custoDoProjeto
             };
+    
+            const token = localStorage.getItem('token');
+            const salvarProjetoUrl = 'http://localhost:8080/projetos';
 
-			var token = localStorage.getItem('token');
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + token);
 
-            axios.post('http://localhost:8080/', projetoData, {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            })
-            .then(function (response) {
-                console.log('Projeto salvo com sucesso:', response.data);
-            })
-            .catch(function (error) {
-                console.error('Erro ao salvar projeto:', error);
-            });
+            const raw = JSON.stringify(projetoData);
+
+            const requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            try {
+    const response = await fetch(salvarProjetoUrl, requestOptions);
+
+    if (!response.ok) {
+        throw new Error(`Erro HTTP! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Projeto salvo com sucesso:', data);
+    // Faça o que for necessário após salvar o projeto
+} catch (error) {
+    console.error('Erro ao salvar projeto:', error.message);
+    // Trate outros erros
+}
         }
     </script>
+    
 </body>
 
 </html>

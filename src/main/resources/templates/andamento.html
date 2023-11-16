@@ -134,12 +134,12 @@
 	<script>
 		function carregarProjetos() {
 			var token = localStorage.getItem('token');
-	
+
 			axios.get('http://localhost:8080/projetos/', {
 				headers: {
 					'Authorization': 'Bearer ' + token
 				}
-			})
+			})				
 			
 			.then(function (response) {
 				console.log(response.data);
@@ -149,7 +149,6 @@
 				console.error('Erro ao carregar projetos:', error);
 			});
 		}
-
     function exibirProjetos(projetos) {
         var container = document.getElementById('projetosContainer');
 
@@ -165,10 +164,10 @@
                                 <span class="card-title-text">${projeto.nomeDoProjeto}</span>
                             </h5>
                             <div class="card-text">
-                                Data de início: ${projeto.dataInicio}
+                                Data de início: ${projeto.dataDeInicio}
                             </div>
                             <div class="card-text">
-                                Valor do projeto: ${projeto.custoProjeto}
+                                Valor do projeto: ${projeto.custoDoProjeto}
                             </div>
                             <!-- Adicione mais campos conforme necessário -->
                             <div class="card-text">
