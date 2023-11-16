@@ -133,9 +133,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
 		function carregarProjetos() {
-			var token = '';
+			var token = localStorage.getItem('token');
 	
-			axios.get('http://localhost:8080/projetos', {
+			axios.get('http://localhost:8080/projetos/', {
 				headers: {
 					'Authorization': 'Bearer ' + token
 				}
