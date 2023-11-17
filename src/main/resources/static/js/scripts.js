@@ -14,7 +14,6 @@ function includeHTML() {
             footer.innerHTML = data;
         });
 }
-
 function conditionallyRemoveButton(html) {
     if (window.location.pathname === '/specialPage.html') {
         html = html.replace('<button id="conditionalButton">Conditional Button</button>', '');

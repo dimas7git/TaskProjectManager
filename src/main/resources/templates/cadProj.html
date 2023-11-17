@@ -41,7 +41,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 offset-lg-3 form-container">
-                            <form>
+                            <form method="post">
                                 <div class="form-group mb-4">
                                     <label for="nomeDoProjeto">Nome do Projeto</label>
                                     <input type="text" class="form-control" id="nomeDoProjeto" name="nomeDoProjeto" required>
@@ -73,7 +73,17 @@
     
 
     <script>
+        function verificarLogin() {
+            var token = localStorage.getItem('token');
+            
+            if (!token) {
+                window.location.href = 'about.html';
+            }
+        }
+
         async function salvarProjeto() {
+            verificarLogin();
+            event.preventDefault();
             const nomeDoProjeto = document.getElementById('nomeDoProjeto').value;
             const dataDeInicio = document.getElementById('dataDeInicio').value;
             const custoDoProjeto = document.getElementById('custoDoProjeto').value;
@@ -108,10 +118,9 @@
 
     const data = await response.json();
     console.log('Projeto salvo com sucesso:', data);
-    // Faça o que for necessário após salvar o projeto
+    window.location.href = 'andamento.html';
 } catch (error) {
     console.error('Erro ao salvar projeto:', error.message);
-    // Trate outros erros
 }
         }
     </script>

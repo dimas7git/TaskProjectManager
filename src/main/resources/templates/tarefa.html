@@ -95,8 +95,16 @@
     <script src="../static/js/scripts.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const taskForm = document.getElementById('task-form');
+       function verificarLogin() {
+            var token = localStorage.getItem('token');
+            
+            if (!token) {
+                window.location.href = 'about.html';
+            }
+        }
+       document.addEventListener('DOMContentLoaded', function () {
+        verificarLogin();    
+        const taskForm = document.getElementById('task-form');
             const taskList = document.getElementById('task-list');
 
             taskForm.addEventListener('submit', function (e) {

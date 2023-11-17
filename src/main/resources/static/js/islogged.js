@@ -1,21 +1,28 @@
-
 function isUserLoggedIn() {
     const token = localStorage.getItem('token');
     return token !== null;
 }
 
-function updateAuthButton() {
-    const authButton = document.getElementById('entrar');
+function updateAuthButtons() {
+    const entrarButton = document.getElementById('entrar');
+    const sairButton = document.getElementById('sair');
 
     if (isUserLoggedIn()) {
-        authButton.textContent = 'Logado';
-        document.getElementById('entrar').style.display = 'none';
+        entrarButton.textContent = 'Logado';
+        entrarButton.style.display = 'none';  
+        sairButton.style.display = 'block';  
     } else {
-        authButton.textContent = 'Entrar';
-        document.getElementById('sair').style.display = 'none';
+        entrarButton.textContent = 'Entrar';
+        entrarButton.style.display = 'block';  
+        sairButton.style.display = 'none';  
     }
 }
 
+function logout() {
+    localStorage.removeItem('token');
+    updateAuthButtons();
+}
+
 window.onload = function () {
-    updateAuthButton();
+    updateAuthButtons();
 };

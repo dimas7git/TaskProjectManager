@@ -86,7 +86,16 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
+		function verificarLogin() {
+            var token = localStorage.getItem('token');
+            
+            if (!token) {
+                window.location.href = 'about.html';
+            }
+        }
+
 		function carregarProjetos() {
+			verificarLogin();
 			var token = localStorage.getItem('token');
 			axios.get('http://localhost:8080/projetos/', {
 				headers: {
