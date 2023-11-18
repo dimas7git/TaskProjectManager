@@ -2,7 +2,7 @@
 <html lang="pt-br">
 
 <head>
-    <title>{Tarefa}</title>
+    <title>Tarefa</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,13 +44,36 @@
 </head>
 
 <body>
-    <div id="header"></div>
+    <header class="header fixed-top">
+
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+                    <div class="site-logo">
+                        <a class="navbar-brand" href="index.html"><img class="logo-icon me-2" src="" width="" alt=""><span class="logo-text">DW3<span class="text-alt"> Projeto</span></span></a>
+                    </div>
+                </div>
+                <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+    
+                    <ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+                        <li class="list-inline-item"><a href="#"><i class="fa fa-github" style="font-size:24px"></i></a>
+                        </li>
+                        <li class="list-inline-item"><a href="about.html"><i class="fa fa-info-circle"
+                                    style="font-size:24px"></i></a></li>
+                    </ul>
+                    <a href="cadProj.html" class="btn btn-primary d-none d-lg-flex mx-md-3">Alterar projeto</a>
+                    
+                    <button class="btn btn-danger" id="logoutButton" onclick="fazerLogout()">Sair</button>
+                </div>
+            </div>
+        </div>        
+    </header>
 
     <div class="page-header theme-bg-dark py-4 text-center position-relative">
         <div class="theme-bg-shapes-right"></div>
         <div class="theme-bg-shapes-left"></div>
         <div class="container">
-            <h1 class="page-heading single-col-max mx-auto">Projetos Concluídos</h1>
+            <h1 class="page-heading single-col-max mx-auto"><span id="projetoNome" ></span> </h1>
             <!-- <div class="page-intro single-col-max mx-auto">Defina; Organize; Realize.</div> -->
         </div>
     </div>
@@ -80,11 +103,10 @@
                                     <option value="concluida">Concluída</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button onclick="salvarTarefa()" class="btn btn-primary">Salvar</button>
                             <button type="button" class="btn btn-warning">Limpar</button>
                             <a href="andamento.html" class="btn btn-cancel">Cancelar</a>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -93,8 +115,9 @@
 
     <div id="footer"></div>
     <script src="../static/js/scripts.js"></script>
+    <script src="../static/js/islogged.js"></script>
 
-    <script>
+    <script> 
        function verificarLogin() {
             var token = localStorage.getItem('token');
             
@@ -151,7 +174,133 @@
                 }
             });
         });
+
+        function pegaId(){
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            document.getElementById('projetoNome').innerText = `${projectId}()`;
+        }
+        
+        
     </script>
+
+    <script> //Pegar o nome pelo id da URL e mostrar no título
+        function obterParametroDaUrl(parametro) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(parametro);
+        }
+
+        async function carregarNomeDoProjetoPorId() {
+            const idUrl = obterParametroDaUrl('id'); 
+
+            if (idUrl) {
+                const token = localStorage.getItem('token');
+                const obterProjetoUrl = `http://localhost:8080/projetos/${idUrl}`;
+
+                const myHeaders = new Headers();
+                myHeaders.append("Authorization", "Bearer " + token);
+
+                const requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    redirect: 'follow'
+                };
+
+                try {
+                    const response = await fetch(obterProjetoUrl, requestOptions);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP! Status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    const nomeDoProjeto = data.nomeDoProjeto;
+
+                    document.getElementById('projetoNome').innerText = `${nomeDoProjeto}`;
+
+                } catch (error) {
+                    console.error('Erro ao obter projeto por ID:', error.message);
+                }
+            } else {
+                console.error('ID não encontrado na URL.');
+            }
+        }
+
+        // Chame a função para carregar o nome do projeto por ID quando necessário
+        carregarNomeDoProjetoPorId();
+    </script>
+
+    <script> //Enviar
+    function verificarLogin() {
+        var token = localStorage.getItem('token');
+        
+        if (!token) {
+            window.location.href = 'about.html';
+        }
+    }
+
+    verificarLogin();
+
+    async function salvarTarefa() {
+        verificarLogin();
+        event.preventDefault();
+
+        const descricaoTarefa = document.getElementById('descricaoTarefa').value;
+        const statusTarefa = document.getElementById('statusTarefa').value;
+        const idProjeto = obterIdProjetoDaUrl(); // Função a ser definida para extrair o id do projeto da URL
+
+        const tarefaData = {
+            descricaoDaTarefa: descricaoTarefa,
+            status: statusTarefa,
+            projeto: {
+                id: idProjeto
+            }
+        };
+
+        const token = localStorage.getItem('token');
+        const salvarTarefaUrl = 'http://localhost:8080/tarefas';
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + token);
+
+        const raw = JSON.stringify(tarefaData);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        try {
+            const response = await fetch(salvarTarefaUrl, requestOptions);
+
+            if (!response.ok) {
+                throw new Error(`Erro HTTP! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Tarefa salva com sucesso:', data);
+            window.location.href = 'andamento.html'; // Redirecionar conforme necessário
+        } catch (error) {
+            console.error('Erro ao salvar tarefa:', error.message);
+        }
+    }
+
+    function obterIdProjetoDaUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('projetoId');
+    }
+</script>
+
+
+
+
+
+
+
+
 
     <!--
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

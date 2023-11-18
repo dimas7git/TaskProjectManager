@@ -20,7 +20,6 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
-    <!-- FontAwesome JS-->
     <!-- Theme CSS -->
     <link id="theme-style" rel="stylesheet" href="../static/css/theme.css">
 </head>
@@ -74,23 +73,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-12 col-lg-4 py-3">
-					    <div class="card shadow-sm">
-						    <div class="card-body">
-							    <h5 class="card-title mb-3">
-								    <span class="theme-icon-holder card-icon-holder me-2">
-								        <i class="fas fa-box fa-fw"></i>
-							        </span>
-							        <span class="card-title-text">????</span>
-							    </h5>
-							    <div class="card-text">
-								    Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra
-								    nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-								</div>
-							    <a class="card-link-mask" href="docs-page.html#section-3"></a>
-						    </div>
-					    </div>
-				    </div> -->
                 </div>
             </div>
         </div>
@@ -100,21 +82,17 @@
     <script src="../static/js/scripts.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
      includeHTML();  
-	   // Função para verificar o login antes de exibir os projetos
         function verificarLogin() {
             var token = localStorage.getItem('token');
 
             if (!token) {
-                // Redirecionar para a página "about.html" se não estiver logado
                 window.location.href = 'about.html';
             }
         }
-
-        // Chamada da função de verificação de login
         verificarLogin();
-
     </script>
 
 </body>

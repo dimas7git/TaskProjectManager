@@ -18,11 +18,7 @@ function updateAuthButtons() {
     }
 }
 
-function logout() {
-    localStorage.removeItem('token');
-    updateAuthButtons();
-}
-
 window.onload = function () {
     updateAuthButtons();
 };
+

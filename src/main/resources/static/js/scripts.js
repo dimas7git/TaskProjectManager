@@ -21,4 +21,10 @@ function conditionallyRemoveButton(html) {
     return html;
 }
 
+function fazerLogout() {
+    localStorage.removeItem('token');
+    window.location.href = 'about.html';
+}
+
+
 includeHTML();

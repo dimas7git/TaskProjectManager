@@ -81,6 +81,8 @@
             }
         }
 
+        verificarLogin();
+
         async function salvarProjeto() {
             verificarLogin();
             event.preventDefault();
@@ -110,19 +112,20 @@
                 redirect: 'follow'
             };
             try {
-    const response = await fetch(salvarProjetoUrl, requestOptions);
+                const response = await fetch(salvarProjetoUrl, requestOptions);
 
-    if (!response.ok) {
-        throw new Error(`Erro HTTP! Status: ${response.status}`);
-    }
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
 
-    const data = await response.json();
-    console.log('Projeto salvo com sucesso:', data);
-    window.location.href = 'andamento.html';
-} catch (error) {
-    console.error('Erro ao salvar projeto:', error.message);
-}
+                const data = await response.json();
+                console.log('Projeto salvo com sucesso:', data);
+                window.location.href = 'andamento.html';
+            } catch (error) {
+                console.error('Erro ao salvar projeto:', error.message);
+            }
         }
+
     </script>
     
 </body>

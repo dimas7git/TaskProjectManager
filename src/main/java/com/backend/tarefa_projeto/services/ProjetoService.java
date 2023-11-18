@@ -27,9 +27,9 @@ public class ProjetoService {
         List<ProjetosDTO> activeProjetos = new ArrayList<>();
     
         for (ProjetosDTO projeto : allProjetos) {
-            if (!projeto.isRemovido()) {
+            //if (!projeto.isRemovido()) {
                 activeProjetos.add(projeto);
-            }
+            //}
         }
     
         return activeProjetos;

@@ -40,42 +40,8 @@
 	<div class="page-content">
 		<div class="container">
 			<div class="docs-overview py-5">
-				<div class="row justify-content-center">
-					<div class="col-12 col-lg-4 py-5">
-						<div class="card shadow-sm">
-							<div class="card-body">
-								<h5 class="card-title mb-3">
-									<span class="theme-icon-holder card-icon-holder me-2">
-										<i class="fa solid fa-check"></i>
-									</span>
-									<span class="card-title-text">{Nome Projeto}</span>
-								</h5>
-								<div class="card-text">
-									Valor do projeto: {valor}
-								</div>
-								<div class="card-text">
-
-								</div>
-								<a class="card-link-mask" href="docs-page.html#section-1"></a>
-							</div>
-						</div>
-					</div>
-					<!-- <div class="col-12 col-lg-4 py-3">
-					    <div class="card shadow-sm">
-						    <div class="card-body">
-							    <h5 class="card-title mb-3">
-								    <span class="theme-icon-holder card-icon-holder me-2">
-								        <i class="fas fa-box fa-fw"></i>
-							        </span>
-							        <span class="card-title-text">????</span>
-							    </h5>
-							    <div class="card-text">
-								    Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.						    
-								</div>
-							    <a class="card-link-mask" href="docs-page.html#section-3"></a>
-						    </div>
-					    </div>
-				    </div> -->
+				<div class="row justify-content-center" id="projetosContainer">
+					
 				</div>
 			</div>
 		</div>
@@ -112,10 +78,15 @@
 			});
 		}
 
-    function exibirProjetos(projetos) {
+		function exibirProjetos(projetos) {
         var container = document.getElementById('projetosContainer');
 
-        projetos.forEach(function (projeto) {
+		var projetosConcluidos = projetos.filter(function (projeto) {
+        	return projeto.removido == true; 
+    	});
+
+        projetosConcluidos.forEach(function (projeto) {
+			console.log(projeto);
             var cardHtml = `
                 <div class="col-md-4 mb-4">
                     <div class="card">
@@ -127,10 +98,10 @@
                                 <span class="card-title-text">${projeto.nomeDoProjeto}</span>
                             </h5>
                             <div class="card-text">
-                                Data de início: ${projeto.dataInicio}
+                                Data de início: ${projeto.dataDeInicio}
                             </div>
                             <div class="card-text">
-                                Valor do projeto: ${projeto.custoProjeto}
+                                Valor do projeto: ${projeto.custoDoProjeto}
                             </div>
                             <!-- Adicione mais campos conforme necessário -->
                             <div class="card-text">
@@ -149,6 +120,7 @@
     window.onload = function () {
         carregarProjetos();
     };
+	
 	</script>
 </body>
 
