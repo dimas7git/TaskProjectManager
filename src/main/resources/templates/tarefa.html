@@ -28,7 +28,9 @@
             padding: 20px;
             margin-bottom: 20px;
         }
-
+        .form-control {
+    padding-top: 08px;
+}
         .task-row {
             display: flex;
             justify-content: space-between;
@@ -61,8 +63,7 @@
                         <li class="list-inline-item"><a href="about.html"><i class="fa fa-info-circle"
                                     style="font-size:24px"></i></a></li>
                     </ul>
-                    <a href="cadProj.html" class="btn btn-primary d-none d-lg-flex mx-md-3">Alterar projeto</a>
-                    
+                    <a id="alterarProjetoBtn" class="btn btn-primary d-none d-lg-flex mx-md-3">Alterar projeto</a>
                     <button class="btn btn-danger" id="logoutButton" onclick="fazerLogout()">Sair</button>
                 </div>
             </div>
@@ -116,73 +117,93 @@
     <div id="footer"></div>
     <script src="../static/js/scripts.js"></script>
     <script src="../static/js/islogged.js"></script>
-
-    <script> 
-       function verificarLogin() {
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function verificarLogin() {
             var token = localStorage.getItem('token');
-            
+    
             if (!token) {
                 window.location.href = 'about.html';
             }
         }
-       document.addEventListener('DOMContentLoaded', function () {
-        verificarLogin();    
-        const taskForm = document.getElementById('task-form');
-            const taskList = document.getElementById('task-list');
+    
+        function obterIdProjetoDaUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+    
+        function obterTarefasDoProjeto() {
+    const idProjeto = obterIdProjetoDaUrl();
+    const token = localStorage.getItem('token'); // Obtenha o token do armazenamento local
 
-            taskForm.addEventListener('submit', function (e) {
-                e.preventDefault();
+    axios.get(`http://localhost:8080/tarefas`, {
+        headers: {
+            'Authorization': `Bearer ${token}` // Adicione o token ao cabeçalho
+        }
+    })
+    .then(function (response) {
+        const tarefasDoProjeto = response.data.filter(tarefa => tarefa.projeto && tarefa.projeto.id === parseInt(idProjeto));
 
-                const descricaoTarefa = document.getElementById('descricaoTarefa').value;
-                const statusTarefa = document.getElementById('statusTarefa').value;
+        const taskList = document.getElementById('task-list');
+        taskList.innerHTML = '';
 
-                if (descricaoTarefa) {
-                    // Cria um novo elemento de tarefa
-                    const taskItem = document.createElement('li');
-                    taskItem.classList.add('task-row');
+        tarefasDoProjeto.forEach(function (tarefa) {
+            const taskItem = document.createElement('li');
+            taskItem.classList.add('task-row');
 
-                    // Nome da tarefa
-                    const taskName = document.createElement('span');
-                    taskName.textContent = descricaoTarefa;
-                    taskName.style.overflow = 'hidden';
-                    taskName.style.textOverflow = 'ellipsis';
-                    taskName.style.whiteSpace = 'nowrap';
-                    taskName.style.flex = '1';
+            const taskName = document.createElement('span');
+            taskName.textContent = tarefa.descricaoDaTarefa;
+            taskName.style.overflow = 'hidden';
+            taskName.style.textOverflow = 'ellipsis';
+            taskName.style.whiteSpace = 'nowrap';
+            taskName.style.flex = '1';
 
-                    // Select para status
-                    const taskStatus = document.createElement('select');
-                    taskStatus.classList.add('form-control', 'task-status');
-                    taskStatus.innerHTML = `
-                        <option value="andamento" ${statusTarefa === 'andamento' ? 'selected' : ''}>Andamento</option>
-                        <option value="fila" ${statusTarefa === 'fila' ? 'selected' : ''}>Na fila</option>
-                        <option value="concluida" ${statusTarefa === 'concluida' ? 'selected' : ''}>Concluída</option>
-                    `;
+            const taskStatus = document.createElement('select');
+taskStatus.classList.add('form-control', 'task-status');
 
-                    // Botão "Atualizar"
-                    const taskUpdate = document.createElement('button');
-                    taskUpdate.classList.add('btn', 'btn-primary', 'task-update');
-                    taskUpdate.textContent = 'Atualizar';
+const optionAndamento = document.createElement('option');
+optionAndamento.value = 'andamento';
+optionAndamento.textContent = 'Andamento';
+optionAndamento.selected = tarefa.status === 'andamento';
 
-                    // Adiciona os elementos à lista
-                    taskItem.appendChild(taskName);
-                    taskItem.appendChild(taskStatus);
-                    taskItem.appendChild(taskUpdate);
-                    taskList.appendChild(taskItem);
+const optionFila = document.createElement('option');
+optionFila.value = 'fila';
+optionFila.textContent = 'Na fila';
+optionFila.selected = tarefa.status === 'fila';
 
-                    // Limpa o formulário
-                    taskForm.reset();
-                }
-            });
+const optionConcluida = document.createElement('option');
+optionConcluida.value = 'concluida';
+optionConcluida.textContent = 'Concluída';
+optionConcluida.selected = tarefa.status === 'concluida';
+
+taskStatus.appendChild(optionAndamento);
+taskStatus.appendChild(optionFila);
+taskStatus.appendChild(optionConcluida);
+
+            taskItem.appendChild(taskName);
+            taskItem.appendChild(taskStatus);
+            taskList.appendChild(taskItem);
+        });
+    })
+    .catch(function (error) {
+        console.error('Erro ao obter tarefas:', error.message);
+    });
+}
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            verificarLogin();
+            pegaId();
+            obterTarefasDoProjeto();
+
         });
 
-        function pegaId(){
+        function pegaId() {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('id');
-            document.getElementById('projetoNome').innerText = `${projectId}()`;
+            document.getElementById('projetoNome').innerText = `${projectId}`;
         }
-        
-        
     </script>
+    
 
     <script> //Pegar o nome pelo id da URL e mostrar no título
         function obterParametroDaUrl(parametro) {
@@ -290,58 +311,9 @@
 
     function obterIdProjetoDaUrl() {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('projetoId');
+        return urlParams.get('id');
     }
 </script>
-
-
-
-
-
-
-
-
-
-    <!--
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const taskForm = document.getElementById('task-form');
-        const taskList = document.getElementById('task-list');
-
-        taskForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const descricaoTarefa = document.getElementById('descricaoTarefa').value;
-            const statusTarefa = document.getElementById('statusTarefa').value;
-
-            if (descricaoTarefa) {
-                try {
-                    const token = 'token'; 
-
-                    const response = await axios.post('http://localhost:8080/tarefas', {
-                        descricaoTarefa,
-                        statusTarefa
-                    }, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    console.log('Resposta do servidor:', response.data);
-
-                    taskForm.reset();
-                } catch (error) {
-                    console.error('Erro ao enviar requisição:', error);
-                }
-            }
-        });
-    });
-</script>
-    -->
-
-
 
 </body>
 

@@ -66,6 +66,10 @@ public class ProjetoService {
         projeto.setNomeDoProjeto(projetosPutRequestBody.getNomeDoProjeto());
         projeto.setDataDeInicio(projetosPutRequestBody.getDataDeInicio());
         projeto.setCustoDoProjeto(projetosPutRequestBody.getCustoDoProjeto());
+
+        if (projetosPutRequestBody.isRemovido() != projeto.isRemovido()) {
+            projeto.setRemovido(projetosPutRequestBody.isRemovido());
+        }
         projetosRepository.save(projeto);
     }
 }

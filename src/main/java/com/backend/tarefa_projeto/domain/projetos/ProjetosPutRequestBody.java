@@ -9,4 +9,5 @@ public class ProjetosPutRequestBody {
     private String nomeDoProjeto;
     private LocalDate dataDeInicio;
     private BigDecimal custoDoProjeto;
+    private boolean removido; 
 }
