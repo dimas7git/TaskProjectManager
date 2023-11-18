@@ -59,31 +59,32 @@
     
     <script>
         async function login() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-        const loginUrl = 'http://localhost:8080/auth/login';
+            const loginUrl = 'http://localhost:8080/auth/login';
 
-        const data = {
-            usuario: username,
-            senha: password
-        };
+            const data = {
+                usuario: username,
+                senha: password
+            };
 
-        try {
-            const response = await axios.post(loginUrl, data, { withCredentials: true });
-            const token = response.data.token;
+            try {
+                const response = await axios.post(loginUrl, data, { withCredentials: true });
+                const token = response.data.token;
 
-            localStorage.setItem('token', token);
+                localStorage.setItem('token', token);
 
-            console.log('Login bem-sucedido. Token:', token);
-            
-            window.location.href = 'about.html';
-        } catch (error) {
-            console.error('Erro durante o login:', error);
-            const err = document.getElementById('erro-login');
-            err.textContent = 'Login inválido!'
+                console.log('Login bem-sucedido. Token:', token);
+                
+                window.location.href = 'about.html';
+            } catch (error) {
+                console.error('Erro durante o login:', error);
+                const err = document.getElementById('erro-login');
+                err.textContent = 'Login inválido!'
+            }
         }
-}
+        
     </script>
 </body>
 

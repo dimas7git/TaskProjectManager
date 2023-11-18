@@ -87,28 +87,6 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="task-container">
-                        <h2>Adicionar Tarefa</h2>
-                        <form id="task-form">
-                            <div class="form-group mb-4">
-                                <label for="descricaoTarefa">Descrição da Tarefa</label>
-                                <input type="text" class="form-control" id="descricaoTarefa" name="descricaoTarefa" required>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="statusTarefa">Status</label>
-                                <select name="statusTarefa" id="statusTarefa" class="form-control" required>
-                                    <option value="fila">Na fila</option>
-                                    <option value="andamento">Andamento</option>
-                                    <option value="concluida">Concluída</option>
-                                </select>
-                            </div>
-                            <button onclick="salvarTarefa()" class="btn btn-primary">Salvar</button>
-                            <button id="limparFormulario()" class="btn btn-warning">Limpar</button>
-                            <a href="andamento.html" class="btn btn-cancel">Cancelar</a>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -117,9 +95,8 @@
     <script src="../static/js/scripts.js"></script>
     <script src="../static/js/islogged.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-
-    <script> //Carregar lista e Alterar projeto
+    
+    <script>
         function verificarLogin() {
             var token = localStorage.getItem('token');
     
@@ -133,102 +110,59 @@
             return urlParams.get('id');
         }
     
-        function salvarStatusDaTarefa(idTarefa, novoStatus) {
-            const token = localStorage.getItem('token');
-            
-            // Verificar se a opção selecionada é "Remover" para realizar o soft delete
-            const removido = novoStatus === 'remover';
-    
-            axios.put(`http://localhost:8080/tarefas/${idTarefa}`, {
-                status: removido ? 'removido' : novoStatus,
-                removido: removido
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(function (response) {
-                console.log('Status da tarefa atualizado com sucesso:', response.data);
-                // Adicione a lógica necessária após a atualização do status
-            })
-            .catch(function (error) {
-                console.error('Erro ao atualizar o status da tarefa:', error.message);
-            });
-        }
-    
-        function obterTarefasDoProjeto() {
-            const idProjeto = obterIdProjetoDaUrl();
-            const token = localStorage.getItem('token');
-    
-            axios.get(`http://localhost:8080/tarefas`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(function (response) {
-                const tarefasDoProjeto = response.data.filter(tarefa => tarefa.projeto && tarefa.projeto.id === parseInt(idProjeto));
-    
-                const taskList = document.getElementById('task-list');
-                taskList.innerHTML = '';
-    
-                tarefasDoProjeto.forEach(function (tarefa) {
-                    const taskItem = document.createElement('li');
-                    taskItem.classList.add('task-row');
-    
-                    const taskName = document.createElement('span');
-                    taskName.textContent = tarefa.descricaoDaTarefa;
-                    
-                    // Se a tarefa estiver concluída, aplique estilo riscado
-                    if (tarefa.status === 'concluida') {
-                        taskName.style.textDecoration = 'line-through';
-                    }
-    
-                    taskName.style.overflow = 'hidden';
-                    taskName.style.textOverflow = 'ellipsis';
-                    taskName.style.whiteSpace = 'nowrap';
-                    taskName.style.flex = '1';
-    
-                    const taskStatus = document.createElement('select');
-                    taskStatus.classList.add('form-control', 'task-status');
-    
-                    const optionAndamento = document.createElement('option');
-                    optionAndamento.value = 'andamento';
-                    optionAndamento.textContent = 'Andamento';
-                    optionAndamento.selected = tarefa.status === 'andamento';
-    
-                    const optionFila = document.createElement('option');
-                    optionFila.value = 'fila';
-                    optionFila.textContent = 'Na fila';
-                    optionFila.selected = tarefa.status === 'fila';
-    
-                    const optionConcluida = document.createElement('option');
-                    optionConcluida.value = 'concluida';
-                    optionConcluida.textContent = 'Concluída';
-                    optionConcluida.selected = tarefa.status === 'concluida';
-    
-                    const optionRemover = document.createElement('option');
-                    optionRemover.value = 'remover';
-                    optionRemover.textContent = 'Remover';
-    
-                    taskStatus.appendChild(optionAndamento);
-                    taskStatus.appendChild(optionFila);
-                    taskStatus.appendChild(optionConcluida);
-                    taskStatus.appendChild(optionRemover);
-    
-                    const saveButton = document.createElement('button');
-                    saveButton.textContent = 'Atualizar';
-                    saveButton.classList.add('btn', 'btn-primary', 'btn-sm');
-                    saveButton.addEventListener('click', function () {
-                        // Chame a função para salvar o status no banco de dados, passando o ID da tarefa
-                        salvarStatusDaTarefa(tarefa.id, taskStatus.value);
-                    });
-    
-                    taskItem.appendChild(taskName);
-                    taskItem.appendChild(taskStatus);
-                    taskItem.appendChild(saveButton);
-                    taskList.appendChild(taskItem);
-                });
-            })
+    function obterTarefasDoProjeto() {
+        const idProjeto = obterIdProjetoDaUrl();
+        const token = localStorage.getItem('token'); // Obtenha o token do armazenamento local
+
+        axios.get(`http://localhost:8080/tarefas`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Adicione o token ao cabeçalho
+            }
+        })
+    .then(function (response) {
+        const tarefasDoProjeto = response.data.filter(tarefa => tarefa.projeto && tarefa.projeto.id === parseInt(idProjeto));
+
+        const taskList = document.getElementById('task-list');
+        taskList.innerHTML = '';
+
+        tarefasDoProjeto.forEach(function (tarefa) {
+            const taskItem = document.createElement('li');
+            taskItem.classList.add('task-row');
+
+            const taskName = document.createElement('span');
+            taskName.textContent = tarefa.descricaoDaTarefa;
+            taskName.style.overflow = 'hidden';
+            taskName.style.textOverflow = 'ellipsis';
+            taskName.style.whiteSpace = 'nowrap';
+            taskName.style.flex = '1';
+
+            const taskStatus = document.createElement('select');
+            taskStatus.classList.add('form-control', 'task-status');
+
+            const optionAndamento = document.createElement('option');
+            optionAndamento.value = 'andamento';
+            optionAndamento.textContent = 'Andamento';
+            optionAndamento.selected = tarefa.status === 'andamento';
+
+            const optionFila = document.createElement('option');
+            optionFila.value = 'fila';
+            optionFila.textContent = 'Na fila';
+            optionFila.selected = tarefa.status === 'fila';
+
+            const optionConcluida = document.createElement('option');
+            optionConcluida.value = 'concluida';
+            optionConcluida.textContent = 'Concluída';
+            optionConcluida.selected = tarefa.status === 'concluida';
+
+            taskStatus.appendChild(optionAndamento);
+            taskStatus.appendChild(optionFila);
+            taskStatus.appendChild(optionConcluida);
+
+            taskItem.appendChild(taskName);
+            taskItem.appendChild(taskStatus);
+            taskList.appendChild(taskItem);
+        });
+        })
             .catch(function (error) {
                 console.error('Erro ao obter tarefas:', error.message);
             });
@@ -236,16 +170,20 @@
     
         document.addEventListener('DOMContentLoaded', function () {
             verificarLogin();
+            pegaId();
             obterTarefasDoProjeto();
+
         });
+
+        function pegaId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            document.getElementById('projetoNome').innerText = `${projectId}`;
+        }
     </script>
     
-    
 
-
-    
-
-    <script> //Dados do projeto pelo id da url
+    <script> //Pegar o nome pelo id da URL
         function obterParametroDaUrl(parametro) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(parametro);
@@ -286,10 +224,12 @@
                 console.error('ID não encontrado na URL.');
             }
         }
+
+        // Chame a função para carregar o nome do projeto por ID quando necessário
         carregarNomeDoProjetoPorId();
     </script>
     
-    <script> //Salvar nova tarefa
+    <script>
     function verificarLogin() {
         var token = localStorage.getItem('token');
         
@@ -316,11 +256,6 @@
             }
         };
 
-        function limparFormulario() {
-            var formulario = document.getElementById("task-form");
-            formulario.reset();
-        }
-
         const token = localStorage.getItem('token');
         const salvarTarefaUrl = 'http://localhost:8080/tarefas';
 
@@ -346,7 +281,7 @@
 
             const data = await response.json();
             console.log('Tarefa salva com sucesso:', data);
-            //window.location.href = '';
+            //window.location.href = 'andamento.html'; // Redirecionar conforme necessário
             location.reload();
         } catch (error) {
                 console.error('Erro ao salvar tarefa:', error.message);
@@ -360,17 +295,22 @@
     </script>
 
 
-    <script> //Alterar projeto
+    <script>
+        // Função para obter o valor do parâmetro 'id' da URL
         function obterParametroId() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('id');
         }
 
+        // Função para redirecionar para a página desejada com o ID dinâmico
         function redirecionarParaCadUpdate() {
+            // Obter o ID dinâmico da URL atual
             const id = obterParametroId();
 
+            // Construir o novo URL com o ID dinâmico
             const novoURL = `http://127.0.0.1:5500/src/main/resources/templates/cadUpdate.html?id=${id}`;
 
+            // Redirecionar para o novo URL
             window.location.href = novoURL;
         }
     </script>
