@@ -133,28 +133,47 @@
             return urlParams.get('id');
         }
     
-        function salvarStatusDaTarefa(idTarefa, novoStatus) {
-            const token = localStorage.getItem('token');
-            
-            // Verificar se a opção selecionada é "Remover" para realizar o soft delete
-            const removido = novoStatus === 'remover';
-    
-            axios.put(`http://localhost:8080/tarefas/${idTarefa}`, {
-                status: removido ? 'removido' : novoStatus,
-                removido: removido
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(function (response) {
-                console.log('Status da tarefa atualizado com sucesso:', response.data);
-                // Adicione a lógica necessária após a atualização do status
-            })
-            .catch(function (error) {
-                console.error('Erro ao atualizar o status da tarefa:', error.message);
-            });
-        }
+        function salvarStatusDaTarefa(idTarefa, novoStatus, descricaoTarefa) {
+    const token = localStorage.getItem('token');
+    const idProjeto = obterParametroDaUrl('id'); 
+
+    if (novoStatus === 'remover') {
+        // Soft delete
+        axios.delete(`http://localhost:8080/tarefas/${idTarefa}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(function (response) {
+            console.log('Tarefa removida com sucesso:', response.data);
+            window.location.reload();
+        })
+        .catch(function (error) {
+            console.error('Erro ao remover a tarefa:', error.message);
+        });
+    } else {
+        // Atualização do status
+        axios.put(`http://localhost:8080/tarefas`, {
+            id: idTarefa,
+            descricaoDaTarefa: descricaoTarefa,
+            status: novoStatus,
+            projeto: {
+                id: idProjeto
+            }
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(function (response) {
+            console.log('Status da tarefa atualizado com sucesso:', response.data);
+            window.location.reload();
+        })
+        .catch(function (error) {
+            console.error('Erro ao atualizar o status da tarefa:', error.message);
+        });
+    }
+}
     
         function obterTarefasDoProjeto() {
             const idProjeto = obterIdProjetoDaUrl();
@@ -178,7 +197,6 @@
                     const taskName = document.createElement('span');
                     taskName.textContent = tarefa.descricaoDaTarefa;
                     
-                    // Se a tarefa estiver concluída, aplique estilo riscado
                     if (tarefa.status === 'concluida') {
                         taskName.style.textDecoration = 'line-through';
                     }
@@ -220,7 +238,7 @@
                     saveButton.classList.add('btn', 'btn-primary', 'btn-sm');
                     saveButton.addEventListener('click', function () {
                         // Chame a função para salvar o status no banco de dados, passando o ID da tarefa
-                        salvarStatusDaTarefa(tarefa.id, taskStatus.value);
+                        salvarStatusDaTarefa(tarefa.id, taskStatus.value, tarefa.descricaoDaTarefa);
                     });
     
                     taskItem.appendChild(taskName);
