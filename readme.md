@@ -37,7 +37,7 @@ O sistema de cadastro de projetos e tarefas é uma aplicação destinada a geren
    - Visualização detalhada de informações sobre um projeto específico, incluindo suas tarefas associadas.
 
 4. **Cadastro de Tarefas Específicas:**
-   - Para cada projeto, os usuários podem adicionar tarefas específicas, atribuindo-lhes informações como descrição, prazo e status.
+   - Para cada projeto, os usuários podem adicionar tarefas específicas, atribuindo-lhes informações como descrição e status.
 
 5. **Atualização de Status de Tarefas:**
    - Os usuários podem atualizar o status das tarefas (por exemplo, "Em Andamento", "Concluída", "Pendente") para refletir o progresso real.
