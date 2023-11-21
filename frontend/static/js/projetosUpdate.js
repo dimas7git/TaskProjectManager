@@ -55,7 +55,6 @@ async function salvarProjeto() {
         const data = await response.json();
         console.log('Projeto atualizado com sucesso:', data);
         window.location.href = 'andamento.html';
-
     } catch (error) {
         console.error('Erro ao salvar projeto:', error.message);
         window.location.href = 'andamento.html';
@@ -90,7 +89,7 @@ async function carregarDadosDoProjetoParaEdicao() {
         document.getElementById('nomeDoProjeto').value = projeto.nomeDoProjeto;
         document.getElementById('dataDeInicio').value = projeto.dataDeInicio;
         document.getElementById('custoDoProjeto').value = projeto.custoDoProjeto;
-        document.getElementById('concluido').checked = projeto.removido; // Ajuste conforme a estrutura real do seu projeto
+        document.getElementById('concluido').checked = projeto.removido;
     } catch (error) {
         console.error('Erro ao obter dados do projeto:', error.message);
     }

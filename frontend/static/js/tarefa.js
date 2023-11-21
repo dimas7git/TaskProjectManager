@@ -79,6 +79,11 @@ function obterTarefasDoProjeto() {
                 taskName.style.textDecoration = 'line-through';
             }
 
+            if (tarefa.status === 'andamento') {
+                taskName.style.fontWeight = 'bold';
+                taskName.style.textDecoration = 'underline';
+            }
+
             taskName.style.overflow = 'hidden';
             taskName.style.textOverflow = 'ellipsis';
             taskName.style.whiteSpace = 'nowrap';
@@ -198,7 +203,7 @@ event.preventDefault();
 
 const descricaoTarefa = document.getElementById('descricaoTarefa').value;
 const statusTarefa = document.getElementById('statusTarefa').value;
-const idProjeto = obterIdProjetoDaUrl(); // Função a ser definida para extrair o id do projeto da URL
+const idProjeto = obterIdProjetoDaUrl(); 
 
 const tarefaData = {
     descricaoDaTarefa: descricaoTarefa,
@@ -207,11 +212,6 @@ const tarefaData = {
         id: idProjeto
     }
 };
-
-function limparFormulario() {
-    var formulario = document.getElementById("task-form");
-    formulario.reset();
-}
 
 const token = localStorage.getItem('token');
 const salvarTarefaUrl = 'http://localhost:8080/tarefas';
@@ -238,8 +238,8 @@ try {
 
     const data = await response.json();
     console.log('Tarefa salva com sucesso:', data);
-    //window.location.href = '';
     location.reload();
+    limparFormulario();
 } catch (error) {
         console.error('Erro ao salvar tarefa:', error.message);
     }
@@ -262,4 +262,9 @@ function redirecionarParaCadUpdate() {
     const novoURL = `http://127.0.0.1:5500/frontend/templates/cadUpdate.html?id=${id}`;
 
     window.location.href = novoURL;
+}
+
+function limparFormulario() {
+    var formulario = document.getElementById("task-form");
+    formulario.reset();
 }

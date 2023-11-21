@@ -47,7 +47,7 @@ projetos.forEach(function (projeto) {
                         Data de início: ${projeto.dataDeInicio}
                     </div>
                     <div class="card-text">
-                        Valor do projeto: ${projeto.custoDoProjeto}
+                        Valor do projeto: R$ ${projeto.custoDoProjeto}
                     </div>
                     <!-- Adicione mais campos conforme necessário -->
                     <div class="card-text">
