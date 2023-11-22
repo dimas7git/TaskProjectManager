@@ -41,7 +41,7 @@
                     <ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
                     </ul>
                     <a href="login.html" class="btn btn-primary" id="entrar">Entrar</a>
-                    <button class="btn btn-danger " id="sair">Sair</button>
+                    <button class="btn btn-danger " id="sair" onclick="fazerLogout()">Sair</button>
                 </div>
             </div>
         </div>
@@ -61,11 +61,11 @@
             <div class="docs-overview py-5">
                 <div class="row justify-content-center">
                     <div class="col-md-7" style="text-align: justify; text-indent: 30px;">
-                        <p>Está aplicação é um gerenciador de tarefas. O usuário cadastra um projeto e especifica as etapas que levarão à sua conclusão.</p>
-                        <p>Quando uma tarefa é concluída, o usuário pode sinalizá-la como <i>realizada</i> e partir para a próxima.</p>
-                        <p>O objetivo da aplicação é facilitar o desenvolvimento de atividades, de forma que o cumprimento das etapas levem à conclusão do projeto de forma estruturada e objetiva.</p>
-                        <p>Este projeto foi realizado para ser submetido à avaliação, como projeto final.</p>
-                        <p>O código fonte está disponível <a href="#" target="_blank">neste repositório</a>, junto dos requisitos definidos e orientações para execução.</p>
+                        <p>Nesta aplicação o usuário cadastra um projeto e especifica as tarefas para concluí-lo.</p>
+                        <p>Ao concluir uma tarefa, o usuário a sinaliza como <i>realizada</i> e segue para a próxima.</p>
+                        <p>O objetivo da aplicação é facilitar o desenvolvimento de atividades, de forma que o cumprimento das tarefas levem à conclusão do projeto de forma objetiva e estruturada.</p>
+                        <p>Este projeto foi desenvolvido para ser submetido à avaliação na disciplina Desenvolvimento Web 3, como projeto final.</p>
+                        <p>O código fonte está disponível <a href="https://github.com/dimas7git/TaskProjectManager" target="_blank">neste repositório</a>, junto dos requisitos de desenvolvimento.</p>
                         <p>Autores: <a href="https://github.com/sassmatheus" target="_blank">Matheus Sass</a> e <a href="https://github.com/dimas7git" target="_blank">Dimas Ferreira</a></p>
                     </div>
                 </div>
@@ -81,7 +81,6 @@
             const sairButton = document.getElementById('sair');
 
             if (isUserLoggedIn()) {
-                entrarButton.textContent = 'Logado';
                 entrarButton.style.display = 'none';  
                 sairButton.style.display = 'block';  
             } else {

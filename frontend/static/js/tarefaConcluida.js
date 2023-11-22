@@ -29,6 +29,7 @@ function obterTarefasDoProjeto() {
             tarefasDoProjeto.forEach(function (tarefa) {
                 const taskItem = document.createElement('li');
                 taskItem.classList.add('task-row');
+                taskItem.style.marginTop = '20px';
 
                 const taskName = document.createElement('span');
                 taskName.textContent = tarefa.descricaoDaTarefa;
@@ -37,27 +38,8 @@ function obterTarefasDoProjeto() {
                 taskName.style.whiteSpace = 'nowrap';
                 taskName.style.flex = '1';
 
-                const taskStatus = document.createElement('select');
-                taskStatus.classList.add('form-control', 'task-status');
-
-                const optionAndamento = document.createElement('option');
-                optionAndamento.value = 'andamento';
-                optionAndamento.textContent = 'Andamento';
-                optionAndamento.selected = tarefa.status === 'andamento';
-
-                const optionFila = document.createElement('option');
-                optionFila.value = 'fila';
-                optionFila.textContent = 'Na fila';
-                optionFila.selected = tarefa.status === 'fila';
-
-                const optionConcluida = document.createElement('option');
-                optionConcluida.value = 'concluida';
-                optionConcluida.textContent = 'Concluída';
-                optionConcluida.selected = tarefa.status === 'concluida';
-
-                taskStatus.appendChild(optionAndamento);
-                taskStatus.appendChild(optionFila);
-                taskStatus.appendChild(optionConcluida);
+                const taskStatus = document.createElement('span');
+                taskStatus.classList.add('task-status');
 
                 taskItem.appendChild(taskName);
                 taskItem.appendChild(taskStatus);

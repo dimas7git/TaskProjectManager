@@ -18,7 +18,7 @@ async function login() {
 
         console.log('Login bem-sucedido. Token:', token);
 
-        window.location.href = 'about.html';
+        window.location.href = 'index.html';
     } catch (error) {
         console.error('Erro durante o login:', error);
         const err = document.getElementById('erro-login');
